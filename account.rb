@@ -1,14 +1,13 @@
- require_relative 'owner.rb'
+require_relative 'owner.rb'
+require 'csv'
 module Bank
   class Account
-    attr_reader :balance
-    attr_reader :owner
-    attr_reader :id
+    attr_reader :balance, :owner, :id, :date
 
-
-    def initialize(id, balance)
+    def initialize(id, balance, open_date)
       @id = id
-      @owner = Bank::Owner.new
+      @owner = nil
+      @open_date = open_date
 
       if balance > 0
         @balance = balance
@@ -16,6 +15,35 @@ module Bank
         raise ArgumentError.new("You must have a positive initial balance
         to open an account.")
       end
+    end
+
+    def self.all
+      accounts = []
+      CSV.open('support/accounts.csv', 'r').each do |line|
+        # For clarity, let's pull out the data and assign it
+        # to variables.
+        id = line[0].to_i
+        balance = line[1].to_i
+        open_date = line[2]
+        accounts << self.new(id, balance, open_date)
+      end
+      return accounts
+    end
+
+    def self.find(id)
+      self.all.each do |account|
+        # IF account's id matches id, return that account and end
+        if account.id == id
+          return account
+        end
+      end
+
+      # the loop has come up with nothing and returned nothing
+      puts "This account doesn't exist."
+    end
+
+    def create_owner
+      
     end
 
     def withdraw(money)
@@ -38,7 +66,7 @@ module Bank
 end
 
 ## make some test code
-# 
+#
 # my_acc = Bank::Account.new(13, 400)
 # puts "Your account ID\#: #{my_acc.id}"
 # puts "Balance: $#{my_acc.balance}"
