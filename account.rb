@@ -2,13 +2,14 @@ require_relative 'owner.rb'
 require 'csv'
 module Bank
   class Account
-    attr_reader :balance, :owner, :id, :date, :minimum_balance
+    attr_reader :balance, :owner, :id, :date, :minimum_balance, :fee
 
     def initialize(id, balance, open_date)
       @id = id
       @owner = nil
       @date = open_date
       @minimum_balance = 0
+      @fee = 0
 
       if balance > @minimum_balance
         @balance = balance
@@ -77,14 +78,23 @@ module Bank
     end
 
     def withdraw(money)
-      if (@balance - money) >= @minimum_balance
-        @balance -= money
+      if (@balance - (money+ @fee)) < @minimum_balance
+        puts "Insufficient funds. Account may not be drawn below #{@minimum_balance}. Transaction canceled."
       else
-        puts "Insufficient funds. Account may not be overdrawn. Transaction
-        canceled."
+        @balance -= (money + @fee)
       end
       return @balance
     end
+
+    # def withdraw(money)
+    #   if (@balance - money) >= @minimum_balance
+    #     @balance -= money
+    #   else
+    #     puts "Insufficient funds. Account may not be overdrawn. Transaction
+    #     canceled."
+    #   end
+    #   return @balance
+    # end
 
     def deposit(money)
       @balance += money
@@ -95,17 +105,17 @@ module Bank
   end
 end
 
-## make some test code
-#
-# my_acc = Bank::Account.new(13, 400)
+# make some test code
+
+# my_acc = Bank::Account.new(13, 400, "yesterday")
 # puts "Your account ID\#: #{my_acc.id}"
 # puts "Balance: $#{my_acc.balance}"
-# my_acc.owner.display_info
+#
 # my_acc.withdraw(400)
 # puts my_acc.balance
 # my_acc.withdraw(1)
 # puts my_acc.balance
 # my_acc.deposit(200)
 # puts my_acc.balance
-# another_acc = Bank::Account.new(14, -200)
+# another_acc = Bank::Account.new(14, -200, "lasturday")
 # puts another_acc.balance

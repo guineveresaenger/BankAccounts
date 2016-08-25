@@ -12,21 +12,21 @@ module Bank
         raise ArgumentError.new("You must have at least 1000 pennies in a
         savings account.")
       end
-      # also add a fee
+      # update fee
       @fee = 200
     end
 
-    # override withdrawal method... yikes!
-    def withdraw(money)
-      # call to super gives us a balance. Subtract an additional 200 pennies
-
-      if (@balance - (money+ @fee)) < @minimum_balance
-        puts "You don't have enough funds. Sorry man."
-      else
-        @balance -= (money + @fee)
-      end
-      return @balance
-    end
+    # override withdrawal method... actually updating the parent class is easier!
+    # def withdraw(money)
+    #   # call to super gives us a balance. Subtract an additional 200 pennies
+    #
+    #   if (@balance - (money+ @fee)) < @minimum_balance
+    #     puts "You don't have enough funds. Sorry man."
+    #   else
+    #     @balance -= (money + @fee)
+    #   end
+    #   return @balance
+    # end
 
     def add_interest(rate) # rate is a percentage, e.g. 0.25
       interest = @balance * (rate/100)
