@@ -2,14 +2,15 @@ require_relative 'owner.rb'
 require 'csv'
 module Bank
   class Account
-    attr_reader :balance, :owner, :id, :date
+    attr_reader :balance, :owner, :id, :date, :minimum_balance
 
     def initialize(id, balance, open_date)
       @id = id
       @owner = nil
-      @open_date = open_date
+      @date = open_date
+      @minimum_balance = 0
 
-      if balance > 0
+      if balance > @minimum_balance
         @balance = balance
       else
         raise ArgumentError.new("You must have a positive initial balance
@@ -47,8 +48,7 @@ module Bank
     #   self.all.each do |account|
     #     CSV.open('support/account_owners.csv', 'r').each do |item|
     #       if account.id == item[0]
-    #         self.owner = Owner.find(item[1])
-    #         puts "omg is this working"
+    #         self.owner = Owner.find(item[1]) ### make owner.new with item args?
     #
     #       end
     #     end
@@ -77,7 +77,7 @@ module Bank
     end
 
     def withdraw(money)
-      if (@balance - money) >= 0
+      if (@balance - money) >= @minimum_balance
         @balance -= money
       else
         puts "Insufficient funds. Account may not be overdrawn. Transaction
