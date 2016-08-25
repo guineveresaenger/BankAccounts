@@ -42,8 +42,38 @@ module Bank
       puts "This account doesn't exist."
     end
 
-    def create_owner
-      
+    # def self.link_account_to_owner
+    #
+    #   self.all.each do |account|
+    #     CSV.open('support/account_owners.csv', 'r').each do |item|
+    #       if account.id == item[0]
+    #         self.owner = Owner.find(item[1])
+    #         puts "omg is this working"
+    #
+    #       end
+    #     end
+    #   #
+    #
+    #   end
+    #   # return owners
+    # end
+
+    def user_create_owner
+      puts "Create an owner ID (different from your account ID):"
+      id = gets.chomp
+      puts "Enter the account holder's last name:"
+      last_name = gets.chomp
+      puts "Enter the account holder's first name:"
+      first_name = gets.chomp
+      puts "Street address:"
+      street = gets.chomp
+      puts "City:"
+      city = gets.chomp
+      puts "State:"
+      state = gets.chomp
+
+      @owner = Owner.new(id, last_name, first_name, street, city, state)
+      return @owner
     end
 
     def withdraw(money)
