@@ -37,16 +37,16 @@ module Bank
   end
 end
 
-# let's test this!
-
-my_save = Bank::SavingsAccount.new(13, 10000, "now")
-
-puts my_save.balance
-puts my_save.id
-puts my_save.date
-puts my_save.minimum_balance
-puts "Withdrawing 1000 pennies(ten dollars): #{my_save.withdraw(1000)}"
-puts my_save.balance
-puts "Trying to withdraw 9000 pennies ($90) #{my_save.withdraw(9000)}"
-puts "Interest earned: #{my_save.add_interest(0.25)}"
-puts "Updated balance: #{my_save.balance}"
+# # let's test this!
+#
+# my_save = Bank::SavingsAccount.new(13, 10000, "now")
+#
+# puts my_save.balance
+# puts my_save.id
+# puts my_save.date
+# puts my_save.minimum_balance
+# puts "Withdrawing 1000 pennies(ten dollars): #{my_save.withdraw(1000)}"
+# puts my_save.balance
+# puts "Trying to withdraw 9000 pennies ($90) #{my_save.withdraw(9000)}"
+# puts "Interest earned: #{my_save.add_interest(0.25)}"
+# puts "Updated balance: #{my_save.balance}"
