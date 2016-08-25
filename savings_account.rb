@@ -3,15 +3,10 @@ require_relative 'account.rb'
 module Bank
   class SavingsAccount < Account
 
+    MIN_BALANCE = 1000
+
     def initialize (id, amount, date)
       super
-      # current min balance is 0, also balance might be below 1000 pennies.
-      # Reset both.
-      @minimum_balance = 1000
-      if @balance < @minimum_balance
-        raise ArgumentError.new("You must have at least 1000 pennies in a
-        savings account.")
-      end
       # update fee
       @fee = 200
     end
@@ -39,12 +34,12 @@ end
 
 # # let's test this!
 #
-# my_save = Bank::SavingsAccount.new(13, 10000, "now")
+# my_save = Bank::SavingsAccount.new(13, 900, "now")
 #
 # puts my_save.balance
 # puts my_save.id
 # puts my_save.date
-# puts my_save.minimum_balance
+# puts Bank::SavingsAccount::MIN_BALANCE
 # puts "Withdrawing 1000 pennies(ten dollars): #{my_save.withdraw(1000)}"
 # puts my_save.balance
 # puts "Trying to withdraw 9000 pennies ($90) #{my_save.withdraw(9000)}"

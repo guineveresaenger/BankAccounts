@@ -1,5 +1,6 @@
 require_relative 'account.rb'
 
+
 module Bank
   class CheckingAccount < Account
 
@@ -41,7 +42,7 @@ module Bank
 end
 
 ## testing
-
+#
 # my_check = Bank::CheckingAccount.new(13, 5000, "today")
 # puts my_check.id
 # puts my_check.balance
@@ -49,6 +50,7 @@ end
 # puts my_check.withdraw(900)
 # puts my_check.deposit(1000)
 # puts
+# puts "Minimum Balance: #{Bank::CheckingAccount::MIN_BALANCE}"
 # puts my_check.checks
 # puts my_check.withdraw_using_check(300)
 # puts my_check.checks

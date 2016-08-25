@@ -2,20 +2,22 @@ require_relative 'owner.rb'
 require 'csv'
 module Bank
   class Account
-    attr_reader :balance, :owner, :id, :date, :minimum_balance, :fee
+
+    MIN_BALANCE = 0
+    attr_reader :balance, :owner, :id, :date
+
 
     def initialize(id, balance, open_date)
       @id = id
       @owner = nil
       @date = open_date
-      @minimum_balance = 0
+
       @fee = 0
 
-      if balance > @minimum_balance
+      if balance > self.class::MIN_BALANCE
         @balance = balance
       else
-        raise ArgumentError.new("You must have a positive initial balance
-        to open an account.")
+        raise ArgumentError.new("You must have an initial balance of more than #{self.class::MIN_BALANCE} to open an account.")
       end
     end
 
@@ -78,8 +80,8 @@ module Bank
     end
 
     def withdraw(money)
-      if (@balance - (money+ @fee)) < @minimum_balance
-        puts "Insufficient funds. Account may not be drawn below #{@minimum_balance}. Transaction canceled."
+      if (@balance - (money+ @fee)) < self.class::MIN_BALANCE
+        puts "Insufficient funds. Account may not be drawn below #{self.class::MIN_BALANCE}. Transaction canceled."
       else
         @balance -= (money + @fee)
       end
@@ -107,7 +109,7 @@ end
 
 # make some test code
 
-# my_acc = Bank::Account.new(13, 400, "yesterday")
+# my_acc = Bank::Account.new(13, 0, "yesterday")
 # puts "Your account ID\#: #{my_acc.id}"
 # puts "Balance: $#{my_acc.balance}"
 #
