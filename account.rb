@@ -16,7 +16,7 @@ module Bank
         @balance = balance
       else
         raise ArgumentError.new("You must have an initial balance of more than
-        #{self.class::MIN_BALANCE} to open this account.")
+        $#{self.class::MIN_BALANCE} to open this account.")
       end
     end
 
@@ -58,7 +58,7 @@ module Bank
         # the first entry in the csv file is account id, the second is
         # balance, the third opening date.
         # Since balance is in pennies, we'll handle that right here.
-        accounts << self.new(line[0].to_i, (line[1].to_i/100).round(2), line[2])
+        accounts << self.new(line[0].to_i, line[1].to_f/100, line[2])
       end
       return accounts
     end
