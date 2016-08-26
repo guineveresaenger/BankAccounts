@@ -6,46 +6,75 @@ module Bank
     MIN_BALANCE = 0
     attr_reader :balance, :owner, :id, :date
 
-
     def initialize(id, balance, open_date)
       @id = id
       @owner = nil
       @date = open_date
-
       @fee = 0
 
       if balance > self.class::MIN_BALANCE
         @balance = balance
       else
-        raise ArgumentError.new("You must have an initial balance of more than #{self.class::MIN_BALANCE} to open an account.")
+        raise ArgumentError.new("You must have an initial balance of more than
+        #{self.class::MIN_BALANCE} to open this account.")
+      end
+    end
+
+    def withdraw(amount)
+      attempted_balance = @balance - (amount + @fee)
+
+      return @balance = sufficient_funds(attempted_balance, self.class::MIN_BALANCE)
+    end
+
+    # def withdraw(money)
+    #   if (@balance - money) >= @minimum_balance
+    #     @balance -= money
+    #   else
+    #     puts "Insufficient funds. Account may not be overdrawn. Transaction
+    #     canceled."
+    #   end
+    #   return @balance
+    # end
+
+    def deposit(money)
+      @balance += money
+      return @balance
+    end
+
+    # how do I make this private again?
+    def sufficient_funds (attempt, limit)
+      if attempt >= limit
+        return attempt
+      else
+        puts "Insufficient funds. Account may not be drawn below
+        $#{limit}. Transaction canceled."
+        return @balance
       end
     end
 
     def self.all
       accounts = []
       CSV.open('support/accounts.csv', 'r').each do |line|
-        # For clarity, let's pull out the data and assign it
-        # to variables.
-        id = line[0].to_i
-        balance = line[1].to_i
-        open_date = line[2]
-        accounts << self.new(id, balance, open_date)
+        # the first entry in the csv file is account id, the second is
+        # balance, the third opening date.
+        # Since balance is in pennies, we'll handle that right here.
+        accounts << self.new(line[0].to_i, (line[1].to_i/100).round(2), line[2])
       end
       return accounts
     end
 
     def self.find(id)
       self.all.each do |account|
-        # IF account's id matches id, return that account and end
+
         if account.id == id
           return account
         end
       end
-
-      # the loop has come up with nothing and returned nothing
+      # if loop doesn't return
       puts "This account doesn't exist."
     end
 
+    ## I never got this to work!
     # def self.link_account_to_owner
     #
     #   self.all.each do |account|
@@ -78,46 +107,5 @@ module Bank
       @owner = Owner.new(id, last_name, first_name, street, city, state)
       return @owner
     end
-
-    def withdraw(money)
-      if (@balance - (money+ @fee)) < self.class::MIN_BALANCE
-        puts "Insufficient funds. Account may not be drawn below #{self.class::MIN_BALANCE}. Transaction canceled."
-      else
-        @balance -= (money + @fee)
-      end
-      return @balance
-    end
-
-    # def withdraw(money)
-    #   if (@balance - money) >= @minimum_balance
-    #     @balance -= money
-    #   else
-    #     puts "Insufficient funds. Account may not be overdrawn. Transaction
-    #     canceled."
-    #   end
-    #   return @balance
-    # end
-
-    def deposit(money)
-      @balance += money
-      return @balance
-    end
-
-
   end
 end
-
-# make some test code
-
-# my_acc = Bank::Account.new(13, 0, "yesterday")
-# puts "Your account ID\#: #{my_acc.id}"
-# puts "Balance: $#{my_acc.balance}"
-#
-# my_acc.withdraw(400)
-# puts my_acc.balance
-# my_acc.withdraw(1)
-# puts my_acc.balance
-# my_acc.deposit(200)
-# puts my_acc.balance
-# another_acc = Bank::Account.new(14, -200, "lasturday")
-# puts another_acc.balance
