@@ -52,18 +52,21 @@ module Bank
         return @balance
       end
 
-      if (@overdraft_warning == true) && ((@balance + amount) < self.class::MIN_BALANCE)
-        puts "You must raise the account balance to at least
-        $#{self.class::MIN_BALANCE} to get any more transactions."
-        return @balance
-      elsif (@overdraft_warning == true) &&((@balance + amount) >= self.class::MIN_BALANCE)
-        @overdraft_warning = false
+      if @overdraft_warning
+        if (@balance + amount) < self.class::MIN_BALANCE
+          puts "You must raise the account balance to at least
+          $#{self.class::MIN_BALANCE} to get any more transactions."
+          return @balance
+        else
+          @overdraft_warning = false
+        end
       end
 
       super
       @transactions -= 1
       return @balance
     end
+
 
     def exceeds_transactions?
       if (@transactions == 0)
