@@ -23,9 +23,6 @@ module Bank
     def withdraw(amount)
       attempted_balance = @balance - (amount + @fee)
       puts attempted_balance
-      puts "Hi"
-      puts
-      puts "Boo"
       return @balance = sufficient_funds(attempted_balance, self.class::MIN_BALANCE)
     end
 

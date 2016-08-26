@@ -6,8 +6,7 @@ module Bank
     MIN_BALANCE = 10000
     OVERDRAFT_FEE = 100
 
-    attr_reader :transactions, :overdraft_warning #we don't need this, I just
-    # wanna know for testing. TODO remove this later!
+    attr_reader :transactions
 
     def initialize(id, balance, date)
       super

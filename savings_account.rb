@@ -12,7 +12,7 @@ module Bank
     end
 
     def add_interest(rate) # rate is a percentage, e.g. 0.25
-      interest = @balance * (rate/100)
+      interest = @balance * rate/100
       # update @balance
       @balance += interest
       return interest
