@@ -18,15 +18,12 @@ module Bank
     end
 
     def withdraw (amount)
-      # Check if we may perform another transaction
+
       if exceeds_transactions?
-        puts @balance
-        puts "poop, why does this poop"
         return @balance
       end
 
-      # Check for overdraft flag
-      if overdraft_warning == true
+      if @overdraft_warning
         puts "You must raise the account balance to at least
         $#{(self.class::MIN_BALANCE) +1} to get any more transactions."
         return @balance
@@ -67,22 +64,21 @@ module Bank
       return @balance
     end
 
-
     def exceeds_transactions?
       if (@transactions == 0)
         puts "You cannot perform any more transactions this month."
         return true
-      # elsif overdraft_warning == true
-      #   puts "You need to get your balance to #{(self.class::MIN_BALANCE) + 1}
-      #   or higher before you may have any more transactions."
-      #   return true
       else
         return false
       end
     end
 
+
+
+
     def reset_transactions
       @transactions = 6
     end
+
   end
 end
