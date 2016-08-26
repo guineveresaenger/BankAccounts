@@ -12,17 +12,20 @@ module Bank
       @date = open_date
       @fee = 0
 
-      if balance > self.class::MIN_BALANCE
+      if balance >= self.class::MIN_BALANCE
         @balance = balance
       else
-        raise ArgumentError.new("You must have an initial balance of more than
+        raise ArgumentError.new("You must have an initial balance of at least
         $#{self.class::MIN_BALANCE} to open this account.")
       end
     end
 
     def withdraw(amount)
       attempted_balance = @balance - (amount + @fee)
-
+      puts attempted_balance
+      puts "Hi"
+      puts
+      puts "Boo"
       return @balance = sufficient_funds(attempted_balance, self.class::MIN_BALANCE)
     end
 
